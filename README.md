@@ -7,3 +7,5 @@
 ```
 npx shadcn-ui@latest init
 ```
+
+Updated At 2023-11-05
