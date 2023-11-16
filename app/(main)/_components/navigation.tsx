@@ -64,6 +64,18 @@ export const Navigation = () => {
     }
   };
 
+  const collapse = () => {
+    if (sidebarRef.current && navbarRef.current) {
+      setIsCollapsed(true);
+      setIsResetting(true);
+
+      sidebarRef.current.style.width = "0";
+      navbarRef.current.style.setProperty("width", "100%");
+      navbarRef.current.style.setProperty("left", "0");
+      setTimeout(() => setIsResetting(false), 300);
+    }
+  };
+
   return (
     <>
       <aside
@@ -75,14 +87,16 @@ export const Navigation = () => {
           isMobile && "w-0"
         )}
       >
-        <div role="button">
-          <ChevronsLeft
-            className={cn(
-              "absolute h-6 w-6 text-muted-foreground rounded-sm top-3 right-2 opacity-0 transition",
-              "hover:bg-neutral-300 dark:hover:bg-neutral-600 group-hover/sidebar:opacity-100",
-              isMobile && "opacity-100"
-            )}
-          />
+        <div
+          role="button"
+          onClick={collapse}
+          className={cn(
+            "absolute h-6 w-6 text-muted-foreground rounded-sm top-3 right-2 opacity-0 transition",
+            "hover:bg-neutral-300 dark:hover:bg-neutral-600 group-hover/sidebar:opacity-100",
+            isMobile && "opacity-100"
+          )}
+        >
+          <ChevronsLeft className="h-6 w-6" />
         </div>
         <div>
           <p>Action items</p>
