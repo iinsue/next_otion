@@ -1,6 +1,11 @@
 "use client";
 
+import { useMutation } from "convex/react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+
 import { Skeleton } from "@/components/ui/skeleton";
+import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { cn } from "@/lib/utils";
 
@@ -31,11 +36,35 @@ export const Item = ({
   onExpand,
   expanded,
 }: ItemProps) => {
+  const router = useRouter();
+  const create = useMutation(api.documents.create);
+
   const handleExpand = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     event.stopPropagation();
     onExpand?.();
+  };
+
+  const onCreate = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    event.stopPropagation();
+
+    if (!id) return;
+
+    const promise = create({ title: "Untitled", parentDocument: id }).then(
+      (documentId) => {
+        if (!expanded) {
+          onExpand?.();
+        }
+        router.push(`/documents/${documentId}`);
+      }
+    );
+
+    toast.promise(promise, {
+      loading: "Creating a new note...",
+      success: "New note created!",
+      error: "Failed to create a new note.",
+    });
   };
 
   const ChevronIcon = expanded ? ChevronDown : ChevronRight;
@@ -82,6 +111,8 @@ export const Item = ({
         {!!id && (
           <div className="ml-auto flex items-center gap-x-2">
             <div
+              role="button"
+              onClick={onCreate}
               className={cn(
                 "opacity-0 h-full ml-auto rounded-sm",
                 "group-hover:opacity-100 hover:bg-neutral-300 dark:hover:bg-neutral-600"
