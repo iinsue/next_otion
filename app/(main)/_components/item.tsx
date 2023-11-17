@@ -3,13 +3,29 @@
 import { useMutation } from "convex/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useUser } from "@clerk/clerk-react";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { cn } from "@/lib/utils";
 
-import { ChevronDown, ChevronRight, LucideIcon, Plus } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+import {
+  ChevronDown,
+  ChevronRight,
+  LucideIcon,
+  MoreHorizontal,
+  Plus,
+  Trash,
+} from "lucide-react";
 
 interface ItemProps {
   id?: Id<"documents">;
@@ -37,6 +53,7 @@ export const Item = ({
   expanded,
 }: ItemProps) => {
   const router = useRouter();
+  const { user } = useUser();
   const create = useMutation(api.documents.create);
 
   const handleExpand = (
@@ -56,7 +73,7 @@ export const Item = ({
         if (!expanded) {
           onExpand?.();
         }
-        router.push(`/documents/${documentId}`);
+        //router.push(`/documents/${documentId}`);
       }
     );
 
@@ -110,6 +127,37 @@ export const Item = ({
         )}
         {!!id && (
           <div className="ml-auto flex items-center gap-x-2">
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                onClick={(event) => event.stopPropagation()}
+                asChild
+              >
+                <div
+                  role="button"
+                  className={cn(
+                    "opacity-0 h-full ml-auto rounded-sm",
+                    "group-hover:opacity-100 hover:bg-neutral-300 dark:hover:bg-neutral-600"
+                  )}
+                >
+                  <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className="w-60"
+                align="start"
+                side="right"
+                forceMount
+              >
+                <DropdownMenuItem onClick={() => {}}>
+                  <Trash className="h-4 w-4 mr-2" />
+                  Delete
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <div className="text-xs text-muted-foreground p-2">
+                  Last edited by: {user?.fullName}
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <div
               role="button"
               onClick={onCreate}
