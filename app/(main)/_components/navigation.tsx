@@ -12,7 +12,13 @@ import { api } from "@/convex/_generated/api";
 import { Item } from "./item";
 import { UserItem } from "./user-item";
 
-import { ChevronsLeft, MenuIcon, PlusCircle, Search } from "lucide-react";
+import {
+  ChevronsLeft,
+  MenuIcon,
+  PlusCircle,
+  Search,
+  Settings,
+} from "lucide-react";
 
 export const Navigation = () => {
   const pathname = usePathname();
@@ -136,6 +142,7 @@ export const Navigation = () => {
         <div>
           <UserItem />
           <Item label="Search" icon={Search} isSearch onClick={() => {}} />
+          <Item label="Settings" icon={Settings} onClick={() => {}} />
           <Item label="New page" icon={PlusCircle} onClick={handleCreate} />
         </div>
         <div className="mt-4">
