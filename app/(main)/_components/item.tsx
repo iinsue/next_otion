@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Id } from "@/convex/_generated/dataModel";
 import { cn } from "@/lib/utils";
 
-import { ChevronDown, ChevronRight, LucideIcon } from "lucide-react";
+import { ChevronDown, ChevronRight, LucideIcon, Plus } from "lucide-react";
 
 interface ItemProps {
   id?: Id<"documents">;
@@ -78,6 +78,18 @@ export const Item = ({
           >
             <span className="text-xs">Ctrl</span>K
           </kbd>
+        )}
+        {!!id && (
+          <div className="ml-auto flex items-center gap-x-2">
+            <div
+              className={cn(
+                "opacity-0 h-full ml-auto rounded-sm",
+                "group-hover:opacity-100 hover:bg-neutral-300 dark:hover:bg-neutral-600"
+              )}
+            >
+              <Plus className="h-4 w-4 text-muted-foreground" />
+            </div>
+          </div>
         )}
       </div>
     </>
