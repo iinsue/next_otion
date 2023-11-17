@@ -26,7 +26,6 @@ import {
   Plus,
   Trash,
 } from "lucide-react";
-import { archive } from "@/convex/documents";
 
 interface ItemProps {
   id?: Id<"documents">;
