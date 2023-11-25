@@ -8,4 +8,4 @@
 npx shadcn-ui@latest init
 ```
 
-Updated At 2023-11-18
+Updated At 2023-11-25
