@@ -8,7 +8,8 @@ import { toast } from "sonner";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { Spinner } from "@/components/spinner";
-import { Search } from "lucide-react";
+import { Search, Trash, Undo } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 export const TrashBox = () => {
   const router = useRouter();
@@ -19,7 +20,7 @@ export const TrashBox = () => {
 
   const [search, setSearch] = useState("");
 
-  const filterDocuments = documents?.filter((document) => {
+  const filteredDocuments = documents?.filter((document) => {
     return document.title.toLowerCase().includes(search.toLowerCase());
   });
 
@@ -64,9 +65,45 @@ export const TrashBox = () => {
   }
 
   return (
-    <div>
-      <div>
-        <Search />
+    <div className="text-sm">
+      <div className="flex items-center gap-x-1 p-2">
+        <Search className="h-4 w-4" />
+        <Input
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+          placeholder="Filter by page title..."
+          className="h-7 px-2 focus-visible:ring-transparent bg-secondary"
+        />
+      </div>
+      <div className="mt-2 px-1 pb-1">
+        <p className="hidden last:block text-xs text-center text-muted-foreground pb-2">
+          No documents found.
+        </p>
+        {filteredDocuments?.map((document) => (
+          <div
+            key={document._id}
+            role="button"
+            onClick={() => onClick(document._id)}
+            className="text-sm rounded-sm w-full hover:bg-primary/5 flex items-center text-primary justify-between"
+          >
+            <span className="truncate pl-2">{document.title}</span>
+            <div className="flex items-center">
+              <div
+                role="button"
+                onClick={(event) => onRestore(event, document._id)}
+                className="rounded-sm p-2 hover:bg-neutral-200"
+              >
+                <Undo className="h-4 w-4 text-muted-foreground" />
+              </div>
+              <div
+                role="button"
+                className="rounded-sm p-2 hover:bg-neutral-200"
+              >
+                <Trash className="h-4 w-4 text-muted-foreground" />
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
